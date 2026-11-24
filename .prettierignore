@@ -1,0 +1,9 @@
+node_modules
+.expo
+dist
+android
+ios
+coverage
+landing
+brand/*.html
+package-lock.json

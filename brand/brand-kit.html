@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>GaadiCheck — Brand Kit</title>
+<style>
+  @font-face { font-family: 'Plus Jakarta Sans'; font-weight: 800; src: url('fonts/PlusJakartaSans_800ExtraBold.ttf'); }
+  @font-face { font-family: 'Plus Jakarta Sans'; font-weight: 700; src: url('fonts/PlusJakartaSans_700Bold.ttf'); }
+  @font-face { font-family: 'Inter'; font-weight: 400; src: url('fonts/Inter_400Regular.ttf'); }
+  @font-face { font-family: 'Inter'; font-weight: 600; src: url('fonts/Inter_600SemiBold.ttf'); }
+  @page { size: A4 landscape; margin: 0; }
+  :root { --indigo:#4338CA; --deep:#2E2A8F; --soft:#EEF0FF; --marigold:#FFC83D; --ink:#0F172A; --muted:#475569; --subtle:#64748B; --canvas:#F6F7FB; --border:#E2E8F0; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: 'Inter', sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 297mm; height: 210mm; padding: 18mm 20mm; page-break-after: always; position: relative; overflow: hidden; background: var(--canvas); }
+  .page:last-child { page-break-after: auto; }
+  h1, h2, h3, .display { font-family: 'Plus Jakarta Sans', sans-serif; }
+  h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--subtle); font-weight: 700; margin-bottom: 14px; }
+  .cover { background: linear-gradient(135deg, var(--indigo), var(--deep)); color: #fff; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover .title { font-size: 64px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.05; }
+  .cover .title span { color: var(--marigold); }
+  .cover p { font-size: 20px; color: #C7CBF7; max-width: 560px; line-height: 1.5; margin-top: 18px; }
+  .cover .meta { font-size: 13px; color: #C7CBF7; display: flex; justify-content: space-between; }
+  .grid { display: grid; gap: 18px; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 18px; }
+  .logos { grid-template-columns: 1.3fr 1fr; }
+  .logo-tile { height: 150px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .swatches { grid-template-columns: repeat(6, 1fr); }
+  .swatch { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
+  .swatch .chip { height: 76px; }
+  .swatch .info { padding: 10px 12px; font-size: 12px; line-height: 1.5; }
+  .swatch .info b { display: block; font-size: 13px; }
+  .row { display: flex; gap: 12px; align-items: center; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-weight: 600; font-size: 13px; }
+  .plate { display: inline-block; font-family: 'Plus Jakarta Sans'; font-weight: 700; letter-spacing: 2px; font-size: 22px; padding: 6px 20px; border: 2px solid var(--ink); border-radius: 7px; background: #fff; }
+  .type-sample { font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 44px; letter-spacing: -1px; }
+  .small { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  ul.rules { padding-left: 18px; font-size: 13px; line-height: 1.8; color: var(--muted); }
+  .aqi { display: flex; height: 14px; border-radius: 999px; overflow: hidden; margin: 10px 0 8px; }
+  .aqi div { flex: 1; }
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="row" style="gap:16px">
+    <img src="logo-mark-inverse.svg" width="72" height="72" alt="" />
+    <div class="display" style="font-size:28px;font-weight:800">Gaadi<span style="color:var(--marigold)">Check</span></div>
+  </div>
+  <div>
+    <div class="title">Know before<br/>you <span>drive.</span></div>
+    <p>Brand kit for GaadiCheck — a personal, district-by-district answer to Delhi-NCR's GRAP vehicle rules, every morning.</p>
+  </div>
+  <div class="meta"><span>Brand kit · v1.0 · November 2026</span><span>Logo · Colour · Type · Voice · Components</span></div>
+</section>
+
+<section class="page">
+  <h2>Logo</h2>
+  <div class="grid logos">
+    <div class="card">
+      <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+        <div class="logo-tile" style="background:#fff;border:1px solid var(--border)"><img src="logo-horizontal.svg" height="54" alt="GaadiCheck logo" /></div>
+        <div class="logo-tile" style="background:var(--indigo)"><img src="logo-horizontal-inverse.svg" height="54" alt="GaadiCheck logo on indigo" /></div>
+        <div class="logo-tile" style="background:var(--canvas)"><img src="logo-mark.svg" height="96" alt="GaadiCheck mark" /></div>
+        <div class="logo-tile" style="background:var(--ink)"><img src="logo-mark-inverse.svg" height="96" alt="GaadiCheck mark on dark" /></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:20px;margin-bottom:8px">A car with the all-clear.</h3>
+      <p class="small">The mark is a car seen head-on wearing a marigold check badge — the vehicle and today's verdict in one shape. Its number plate nods to the plate badges used across the app. Indigo carries the brand; marigold is kept for the badge and other "signal" moments.</p>
+      <ul class="rules" style="margin-top:12px">
+        <li>Clear space: the badge's diameter on every side</li>
+        <li>Minimum size: mark 24 px · lock-up 96 px wide</li>
+        <li>Never recolour, rotate, outline or stretch the mark</li>
+        <li>Never pair with government emblems, the national flag, the Ashoka Chakra or state seals</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 style="margin-top:24px">Colour</h2>
+  <div class="grid swatches">
+    <div class="swatch"><div class="chip" style="background:#4338CA"></div><div class="info"><b>Indigo</b>#4338CA · primary</div></div>
+    <div class="swatch"><div class="chip" style="background:#2E2A8F"></div><div class="info"><b>Indigo deep</b>#2E2A8F · gradients</div></div>
+    <div class="swatch"><div class="chip" style="background:#FFC83D"></div><div class="info"><b>Marigold</b>#FFC83D · accent</div></div>
+    <div class="swatch"><div class="chip" style="background:#0F172A"></div><div class="info"><b>Ink</b>#0F172A · text</div></div>
+    <div class="swatch"><div class="chip" style="background:#F6F7FB"></div><div class="info"><b>Canvas</b>#F6F7FB · background</div></div>
+    <div class="swatch"><div class="chip" style="background:#EEF0FF"></div><div class="info"><b>Indigo soft</b>#EEF0FF · tints</div></div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="grid" style="grid-template-columns:1.1fr 1fr">
+    <div>
+      <h2>Typography</h2>
+      <div class="card">
+        <div class="type-sample">Plus Jakarta Sans</div>
+        <p class="small">ExtraBold 800 · Bold 700 — display, headings, wordmark, number plates</p>
+        <div style="font-size:28px;margin-top:14px">Inter</div>
+        <p class="small">Regular 400 · SemiBold 600 — body and interface text. Hindi is set in Noto Sans Devanagari at matching weights.</p>
+        <p style="margin-top:14px;font-size:15px;line-height:1.6">Display 30 · Title 24 · Heading 18 · Body 15 · Caption 13</p>
+      </div>
+      <h2 style="margin-top:22px">Voice</h2>
+      <div class="card">
+        <ul class="rules">
+          <li><b>Lead with the answer</b> — "You're good to drive", then why.</li>
+          <li><b>Plain and calm</b> — "Not allowed", never alarmist, no exclamation marks.</li>
+          <li><b>Specific</b> — "Fine up to ₹20,000", "Expires 30 Nov".</li>
+          <li><b>Bilingual</b> — English and natively written Hindi.</li>
+          <li><b>Independent</b> — we point to the official order; we never pose as one.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h2>Signature components</h2>
+      <div class="card">
+        <span class="plate">UP 14 AB 1234</span>
+        <div class="row" style="margin-top:16px;flex-wrap:wrap">
+          <span class="pill" style="background:#E7F6EC;color:#15803D">✓ Allowed</span>
+          <span class="pill" style="background:#FEF3E2;color:#B45309">! Check</span>
+          <span class="pill" style="background:#FDECEC;color:#B91C1C">✕ Not allowed</span>
+        </div>
+        <div class="row" style="margin-top:16px">
+          <div style="width:48px;height:48px;border-radius:12px;background:#D32F2F;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans';font-weight:700;font-size:18px">II</div>
+          <div><b>GRAP Stage II</b><div class="small">Stage badge in its stage colour</div></div>
+        </div>
+        <p class="small" style="margin-top:16px">AQI bands (CPCB)</p>
+        <div class="aqi"><div style="background:#3FAE49"></div><div style="background:#9BCB3B"></div><div style="background:#F2C014"></div><div style="background:#F28C28"></div><div style="background:#E53935"></div><div style="background:#8E1B1B"></div></div>
+        <p class="small">Good · Satisfactory · Moderate · Poor · Very poor · Severe. Status is always icon + word + colour — never colour alone.</p>
+      </div>
+      <h2 style="margin-top:22px">App icon</h2>
+      <div class="card row" style="gap:18px">
+        <img src="../assets/icon.png" width="96" height="96" style="border-radius:22px" alt="App icon" />
+        <p class="small">Indigo gradient tile, white car, marigold check badge. Android ships adaptive (background, foreground, themed monochrome) layers. The splash shows the car alone on indigo; the launch animation then stamps the badge on and fades in the name.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

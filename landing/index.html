@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GaadiCheck — Know before you drive</title>
+  <meta name="description" content="Can your vehicle be on the road today? GaadiCheck checks Delhi-NCR's GRAP rules for your exact car, district by district, and reminds you before your PUC expires." />
+  <meta property="og:title" content="GaadiCheck — Know before you drive" />
+  <meta property="og:description" content="Today's GRAP verdict for your exact vehicle across Delhi, Gurugram, Noida, Ghaziabad, Faridabad and Sonipat." />
+  <meta name="theme-color" content="#4338CA" />
+  <link rel="icon" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --indigo: #4338ca; --deep: #2e2a8f; --soft: #eef0ff; --muted-indigo: #c7cbf7; --marigold: #ffc83d;
+      --ink: #0f172a; --muted: #475569; --subtle: #64748b; --canvas: #f6f7fb; --border: #e2e8f0;
+      --go: #15803d; --go-soft: #e7f6ec; --stop: #b91c1c; --stop-soft: #fdecec; --caution: #b45309; --caution-soft: #fef3e2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: Inter, system-ui, sans-serif; color: var(--ink); background: var(--canvas); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, .brand { font-family: 'Plus Jakarta Sans', Inter, sans-serif; letter-spacing: -0.02em; }
+    a { color: inherit; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px; font-weight: 600; text-decoration: none; transition: transform .15s ease, background .15s ease; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--marigold); color: var(--ink); }
+    .btn-ghost { color: #fff; border: 1px solid rgba(255,255,255,.35); }
+    .btn-dark { background: var(--indigo); color: #fff; }
+
+    header { position: sticky; top: 0; z-index: 10; background: rgba(67,56,202,.96); backdrop-filter: blur(8px); }
+    nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; color: #fff; text-decoration: none; }
+    .brand .accent { color: var(--marigold); }
+    nav .links { display: flex; gap: 28px; align-items: center; }
+    nav .links a { color: var(--muted-indigo); text-decoration: none; font-weight: 500; font-size: 15px; }
+    nav .links a.btn { color: var(--ink); }
+
+    .hero { background: linear-gradient(135deg, var(--indigo), var(--deep)); color: #fff; padding: 72px 0 96px; overflow: hidden; }
+    .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+    .eyebrow { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; font-weight: 600; color: var(--marigold); background: rgba(255,200,61,.12); padding: 6px 12px; border-radius: 999px; }
+    .hero h1 { font-size: clamp(40px, 6vw, 64px); line-height: 1.05; margin: 20px 0; font-weight: 800; }
+    .hero h1 em { font-style: normal; color: var(--marigold); }
+    .hero p.lead { font-size: 19px; color: var(--muted-indigo); max-width: 540px; }
+    .hero .ctas { display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap; }
+    .hero small { display: block; margin-top: 16px; color: var(--muted-indigo); font-size: 13px; }
+
+    .phone { width: 300px; margin: 0 auto; background: #0b1020; border-radius: 42px; padding: 12px; box-shadow: 0 40px 80px rgba(10,8,60,.45); transform: rotate(2deg); }
+    .screen { background: var(--canvas); border-radius: 32px; padding: 20px 16px; color: var(--ink); font-size: 13px; }
+    .screen .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-weight: 600; color: var(--muted); }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 16px; }
+    .verdict { padding: 16px; background: var(--caution-soft); border-radius: 16px 16px 0 0; }
+    .verdict h4 { font-family: 'Plus Jakarta Sans'; font-size: 18px; margin: 8px 0 4px; }
+    .verdict p { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .plate { display: inline-block; white-space: nowrap; font-family: 'Plus Jakarta Sans'; font-weight: 700; letter-spacing: 1.5px; border: 1.5px solid var(--ink); border-radius: 6px; padding: 2px 10px; background: #fff; font-size: 13px; }
+    .zones { margin-top: 12px; }
+    .zone { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 600; }
+    .zone:last-child { border-bottom: 0; }
+    .pill { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+    .pill.go { background: var(--go-soft); color: var(--go); }
+    .pill.stop { background: var(--stop-soft); color: var(--stop); }
+
+    section { padding: 88px 0; }
+    .section-title { text-align: center; max-width: 680px; margin: 0 auto 48px; }
+    .section-title h2 { font-size: clamp(30px, 4vw, 40px); line-height: 1.15; margin-bottom: 12px; }
+    .section-title p { color: var(--muted); font-size: 17px; }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .stat { padding: 24px; }
+    .stat b { display: block; font-family: 'Plus Jakarta Sans'; font-size: 36px; color: var(--indigo); line-height: 1.1; margin-bottom: 8px; }
+    .stat p { color: var(--muted); font-size: 14px; }
+    .stat a { display: inline-block; margin-top: 10px; font-size: 12px; color: var(--subtle); }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: step; }
+    .step { padding: 28px; position: relative; }
+    .step::before { counter-increment: step; content: counter(step); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--soft); color: var(--indigo); font-family: 'Plus Jakarta Sans'; font-weight: 800; margin-bottom: 16px; }
+    .step h3 { font-size: 20px; margin-bottom: 8px; }
+    .step p { color: var(--muted); }
+
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature { padding: 24px; }
+    .feature .icon { width: 40px; height: 40px; border-radius: 12px; background: var(--soft); display: grid; place-items: center; font-size: 20px; margin-bottom: 14px; }
+    .feature h3 { font-size: 17px; margin-bottom: 6px; }
+    .feature p { color: var(--muted); font-size: 15px; }
+
+    .privacy { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .privacy .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .privacy ul { list-style: none; display: grid; gap: 14px; }
+    .privacy li { display: flex; gap: 12px; color: var(--muted); }
+    .privacy li::before { content: '✓'; color: var(--go); font-weight: 700; }
+
+    .faq { max-width: 760px; margin: 0 auto; display: grid; gap: 12px; }
+    details { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; }
+    summary { cursor: pointer; font-weight: 600; font-size: 17px; }
+    details p { color: var(--muted); margin-top: 10px; }
+
+    .cta { background: linear-gradient(135deg, var(--indigo), var(--deep)); color: #fff; text-align: center; border-radius: 28px; padding: 64px 24px; }
+    .cta h2 { font-size: clamp(30px, 4vw, 42px); margin-bottom: 12px; }
+    .cta p { color: var(--muted-indigo); margin-bottom: 28px; }
+
+    footer { padding: 40px 0 56px; color: var(--subtle); font-size: 13px; }
+    footer .wrap { display: grid; gap: 12px; }
+
+    @media (max-width: 900px) {
+      .hero .wrap, .privacy .wrap { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .steps, .features { grid-template-columns: 1fr; }
+      nav .links a:not(.btn) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="wrap">
+      <a class="brand" href="#">
+        <img src="assets/logo-mark.svg" width="34" height="34" alt="" />
+        <span>Gaadi<span class="accent">Check</span></span>
+      </a>
+      <div class="links">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+        <!-- Replace with the GitHub Releases URL once v1.0.0 is published -->
+        <a class="btn btn-primary" href="#download">Download APK</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="wrap">
+        <div>
+          <span class="eyebrow">● Delhi-NCR · GRAP 2026–27</span>
+          <h1>Know before<br />you <em>drive.</em></h1>
+          <p class="lead">GRAP stages switch on overnight, and the rules depend on your fuel, BS norm and where your car is registered. GaadiCheck gives you a clear yes or no for your exact vehicle — district by district, every morning.</p>
+          <div class="ctas">
+            <a class="btn btn-primary" id="download" href="#">⬇ Download for Android</a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+          <small>Free · English &amp; हिन्दी · No sign-up · Independent, not a government app</small>
+        </div>
+        <div class="phone" aria-hidden="true">
+          <div class="screen">
+            <div class="top"><span class="brand" style="color:var(--ink);font-size:16px"><span>Gaadi<span style="color:var(--indigo)">Check</span></span></span><span>Tue, 25 Nov</span></div>
+            <div class="card">
+              <div class="verdict">
+                <span class="pill stop">✕ Not allowed in Delhi</span>
+                <h4>Restricted in Delhi</h4>
+                <p>You can drive in Ghaziabad, but avoid the areas marked below.</p>
+              </div>
+              <div style="padding:12px 14px;display:flex;gap:10px;align-items:center">
+                <span class="plate">UP 14 DT 4521</span><span style="color:var(--subtle);font-size:11px">Diesel · BS-IV · Car</span>
+              </div>
+            </div>
+            <div class="card zones">
+              <div class="zone">Ghaziabad <span class="pill go">✓ Allowed</span></div>
+              <div class="zone">Delhi <span class="pill stop">✕ Not allowed</span></div>
+              <div class="zone">Noida <span class="pill go">✓ Allowed</span></div>
+              <div class="zone">Gurugram <span class="pill go">✓ Allowed</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <div class="section-title">
+          <h2>November 2026, in numbers</h2>
+          <p>Rules change faster than anyone can track — and cameras now issue the challans automatically.</p>
+        </div>
+        <div class="stats">
+          <div class="card stat"><b>376</b><p>Delhi's average AQI on Diwali, 8 Nov — the worst festival-day reading since 2021.</p><a href="https://www.outlookindia.com/national/delhi-smog-after-diwali-aqi-371-severe-air-pollution-stubble-burning-grap-stage-3" target="_blank" rel="noopener">Outlook India ↗</a></div>
+          <div class="card stat"><b>11 days</b><p>Stage III curbs ran from 6 to 17 Nov, taking BS-III petrol and BS-IV diesel cars off NCR roads.</p><a href="https://www.businesstoday.in/india/story/grap-3-curbs-revoked-in-delhi-will-restrictions-on-bs-3-petrol-bs-4-diesel-cars-to-continue-what-we-know-568060-2026-11-18" target="_blank" rel="noopener">Business Today ↗</a></div>
+          <div class="card stat"><b>3,048</b><p>PUC challans issued by Delhi Traffic Police in a single week of the GRAP drive.</p><a href="https://theprint.in/india/delhi-traffic-police-issues-3048-pucc-challans-in-drive-under-grap-in-one-week/3101051/" target="_blank" rel="noopener">ThePrint ↗</a></div>
+          <div class="card stat"><b>Top 5</b><p>Ghaziabad ranked among India's five most polluted districts from 12 to 14 Nov.</p><a href="https://www.oneindia.com/india/grap-iii-fails-to-bring-relief-ghaziabad-ranks-among-indias-5-most-polluted-districts-for-3-days-8259709.html" target="_blank" rel="noopener">Oneindia ↗</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Thirty seconds to set up. One glance every morning.</h2>
+          <p>No account, no paperwork — just your registration details.</p>
+        </div>
+        <div class="steps">
+          <div class="card step"><h3>Add your vehicle</h3><p>Type the number, or scan an RC screenshot from mParivahan. We suggest the BS norm from the registration date — you confirm it.</p></div>
+          <div class="card step"><h3>Get today's verdict</h3><p>See whether you can drive in each NCR district, why, the fine at stake, and a link to the official order behind every rule.</p></div>
+          <div class="card step"><h3>Stay ahead</h3><p>Get alerted when a GRAP stage change affects your car, and reminded a week before your PUC or insurance lapses.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-title"><h2>Built for how NCR actually drives</h2></div>
+        <div class="features">
+          <div class="card feature"><div class="icon">🚦</div><h3>Every district at once</h3><p>Delhi plus Gurugram, Noida, Ghaziabad, Faridabad and Sonipat — including Delhi's winter entry rule for outside cars.</p></div>
+          <div class="card feature"><div class="icon">📄</div><h3>Reads your RC for you</h3><p>On-device text recognition fills in fuel, BS norm and registration date from a screenshot. Nothing is uploaded.</p></div>
+          <div class="card feature"><div class="icon">🔔</div><h3>Stage-change alerts</h3><p>A notification only when a change affects one of your vehicles. No spam, no promotions.</p></div>
+          <div class="card feature"><div class="icon">🌫️</div><h3>Official air quality</h3><p>CPCB station readings by district, plus tomorrow's outlook so a stricter stage never takes you by surprise.</p></div>
+          <div class="card feature"><div class="icon">🧾</div><h3>No surprise challans</h3><p>PUC and insurance reminders, and a one-tap finder for the nearest PUC centre.</p></div>
+          <div class="card feature"><div class="icon">अ</div><h3>English and हिन्दी</h3><p>Every screen, alert and reminder in both languages — switch any time.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="privacy">
+      <div class="wrap">
+        <div>
+          <h2 style="font-size:36px;line-height:1.15;margin-bottom:12px">Your vehicle details never leave your phone.</h2>
+          <p style="color:var(--muted)">GaadiCheck is designed to work without an account or a server holding your data.</p>
+        </div>
+        <ul>
+          <li>Registration numbers and dates are stored only on your device.</li>
+          <li>RC and PUC images are read on the phone and discarded.</li>
+          <li>Alerts use anonymous topics like "zone-ghaziabad" — never your number.</li>
+          <li>Location is used once, only if you ask, to pick your district.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap">
+        <div class="section-title"><h2>Questions</h2></div>
+        <div class="faq">
+          <details><summary>Is GaadiCheck an official government app?</summary><p>No. GaadiCheck is independent and not affiliated with CAQM, CPCB or any government body. We publish the rules we apply with a link to the official source, and you should always follow the latest order and on-ground instructions.</p></details>
+          <details><summary>Where does the data come from?</summary><p>GRAP stages and rules come from CAQM orders. Official air quality comes from the Central Pollution Control Board via data.gov.in, and forecasts from Open-Meteo using Copernicus data.</p></details>
+          <details><summary>Does it work offline?</summary><p>Yes. The last known stage and your verdicts are cached, and the app tells you when it is showing saved data.</p></details>
+          <details><summary>Is there an iPhone version?</summary><p>Android comes first. The app is built cross-platform, so iOS can follow.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="cta">
+          <h2>Check before you turn the key.</h2>
+          <p>Free for Android. Takes thirty seconds to set up.</p>
+          <a class="btn btn-primary" href="#download">⬇ Download the APK</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="brand" style="color:var(--ink);font-size:18px"><span>Gaadi<span style="color:var(--indigo)">Check</span></span></div>
+      <p>Independent app — not affiliated with CAQM, CPCB, MoRTH or any government body. Verdicts are guidance based on the published GRAP schedule and the details you enter.</p>
+      <p>Air quality: CPCB via data.gov.in · Forecasts: Open-Meteo (CC BY 4.0) · Rules: CAQM orders</p>
+    </div>
+  </footer>
+</body>
+</html>

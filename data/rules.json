@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-22T21:00:00+05:30",
+  "documents": {
+    "pucFineInr": 10000,
+    "newVehiclePucValidityMonths": 12,
+    "reminderLeadDays": [7, 1],
+    "expiringSoonDays": 7,
+    "ageLimitYears": {
+      "diesel": 10,
+      "petrol": 15
+    }
+  },
+  "rules": [
+    {
+      "id": "delhi-entry-below-bs6",
+      "zones": ["delhi"],
+      "conditions": {
+        "vehicleTypes": ["car"],
+        "fuels": ["petrol", "diesel"],
+        "maxBsNorm": 4,
+        "registeredInDelhi": false,
+        "validFrom": "2026-11-01",
+        "validUntil": "2027-01-31",
+        "exemptEssentialServices": true
+      },
+      "severity": "blocked",
+      "fineInr": null,
+      "alertTopic": "rule-delhi-entry",
+      "title": {
+        "en": "Entry into Delhi restricted",
+        "hi": "दिल्ली में प्रवेश पर रोक"
+      },
+      "explanation": {
+        "en": "Cars registered outside Delhi that are below BS-VI cannot enter Delhi from 1 Nov 2026 to 31 Jan 2027, at every GRAP stage. CNG, electric and essential-service vehicles are exempt.",
+        "hi": "1 नवंबर 2026 से 31 जनवरी 2027 तक, दिल्ली के बाहर रजिस्टर्ड BS-VI से नीचे की कारें किसी भी GRAP स्टेज में दिल्ली में प्रवेश नहीं कर सकतीं। CNG, इलेक्ट्रिक और आवश्यक सेवा वाहनों को छूट है।"
+      },
+      "sourceUrl": "https://caqm.nic.in"
+    },
+    {
+      "id": "grap3-petrol-bs3",
+      "zones": ["delhi", "gurugram", "faridabad", "ghaziabad", "gautam-buddh-nagar", "sonipat"],
+      "conditions": {
+        "vehicleTypes": ["car"],
+        "fuels": ["petrol"],
+        "maxBsNorm": 3,
+        "minStage": 3,
+        "exemptEssentialServices": true
+      },
+      "severity": "blocked",
+      "fineInr": 20000,
+      "alertTopic": "rule-grap3",
+      "title": {
+        "en": "BS-III petrol cars off the road",
+        "hi": "BS-III पेट्रोल कारों पर रोक"
+      },
+      "explanation": {
+        "en": "From GRAP Stage III, BS-III (and older) petrol cars cannot be driven in Delhi and the high-density NCR districts.",
+        "hi": "GRAP स्टेज III से दिल्ली और एनसीआर के प्रमुख जिलों में BS-III (और पुरानी) पेट्रोल कारें नहीं चलाई जा सकतीं।"
+      },
+      "sourceUrl": "https://caqm.nic.in"
+    },
+    {
+      "id": "grap3-diesel-bs4",
+      "zones": ["delhi", "gurugram", "faridabad", "ghaziabad", "gautam-buddh-nagar", "sonipat"],
+      "conditions": {
+        "vehicleTypes": ["car"],
+        "fuels": ["diesel"],
+        "maxBsNorm": 4,
+        "minStage": 3,
+        "exemptEssentialServices": true
+      },
+      "severity": "blocked",
+      "fineInr": 20000,
+      "alertTopic": "rule-grap3",
+      "title": {
+        "en": "BS-IV diesel cars off the road",
+        "hi": "BS-IV डीज़ल कारों पर रोक"
+      },
+      "explanation": {
+        "en": "From GRAP Stage III, BS-IV (and older) diesel cars cannot be driven in Delhi and the high-density NCR districts.",
+        "hi": "GRAP स्टेज III से दिल्ली और एनसीआर के प्रमुख जिलों में BS-IV (और पुरानी) डीज़ल कारें नहीं चलाई जा सकतीं।"
+      },
+      "sourceUrl": "https://caqm.nic.in"
+    },
+    {
+      "id": "grap3-goods-vehicles",
+      "zones": ["delhi", "gurugram", "faridabad", "ghaziabad", "gautam-buddh-nagar", "sonipat"],
+      "conditions": {
+        "vehicleTypes": ["goods"],
+        "minStage": 3,
+        "exemptEssentialServices": true
+      },
+      "severity": "check",
+      "fineInr": null,
+      "alertTopic": "rule-goods",
+      "title": {
+        "en": "Goods vehicle curbs in force",
+        "hi": "मालवाहक वाहनों पर पाबंदियां लागू"
+      },
+      "explanation": {
+        "en": "Stage III and IV add movement and entry limits for goods vehicles that depend on fuel, BS norm and registration. Check the current CAQM order before you drive.",
+        "hi": "स्टेज III और IV में मालवाहक वाहनों पर ईंधन, BS मानक और रजिस्ट्रेशन के आधार पर आवाजाही व प्रवेश की सीमाएं लगती हैं। चलाने से पहले CAQM का ताज़ा आदेश देखें।"
+      },
+      "sourceUrl": "https://caqm.nic.in"
+    }
+  ]
+}
