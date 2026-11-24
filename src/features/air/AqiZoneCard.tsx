@@ -5,7 +5,10 @@ import { AppText, Card } from '@/components/ui';
 import type { LanguageCode, ZoneId } from '@/domain/types';
 import { zoneLabel } from '@/features/today/verdictCopy';
 import type { AqiReading, ZoneAirQuality } from '@/services/airQuality';
-import { aqiColors, colors, radius, spacing } from '@/theme';
+import { colors, radius, spacing } from '@/theme';
+
+import { AqiTile } from './AqiTile';
+import { SourceLabel } from './SourceLabel';
 
 interface AqiZoneCardProps {
   zone: ZoneId;
@@ -14,26 +17,17 @@ interface AqiZoneCardProps {
   isHome: boolean;
 }
 
-function SourceLabel({ reading }: { reading: AqiReading }) {
-  const { t } = useTranslation();
-  return (
-    <AppText variant="caption" color={colors.inkSubtle}>
-      {reading.source === 'cpcb'
-        ? t('air.sourceCpcb', { count: reading.stationCount ?? 1 })
-        : t('air.sourceModel')}
-      {' · '}
-      {t('air.prominent', { pollutant: reading.prominent })}
-    </AppText>
-  );
-}
-
 export function AqiZoneCard({ zone, data, loading, isHome }: AqiZoneCardProps) {
   const { t, i18n } = useTranslation();
   const language = i18n.language as LanguageCode;
   const current = data?.current ?? null;
   const tomorrow = data?.tomorrow ?? null;
-  const palette = current ? aqiColors[current.category] : null;
   const name = zoneLabel(zone, language);
+
+  const describe = (label: string, reading: AqiReading | null) =>
+    reading
+      ? `${label}: AQI ${reading.aqi}, ${t(`air.categories.${reading.category}`)}`
+      : `${label}: ${t('air.noReading')}`;
 
   return (
     <Card>
@@ -51,38 +45,21 @@ export function AqiZoneCard({ zone, data, loading, isHome }: AqiZoneCardProps) {
         {loading && !data ? <ActivityIndicator color={colors.primary} /> : null}
       </View>
 
-      {current && palette ? (
+      {current || tomorrow ? (
         <View
           style={styles.body}
           accessible
-          accessibilityLabel={`${name}: AQI ${current.aqi}, ${t(`air.categories.${current.category}`)}`}
+          accessibilityLabel={[
+            name,
+            describe(t('air.today'), current),
+            describe(t('air.tomorrow'), tomorrow),
+          ].join('. ')}
         >
-          <View style={[styles.metric, { backgroundColor: palette.background }]}>
-            <AppText variant="metric" color={palette.foreground}>
-              {current.aqi}
-            </AppText>
-            <AppText variant="calloutStrong" color={palette.foreground}>
-              {t(`air.categories.${current.category}`)}
-            </AppText>
+          <View style={styles.tiles}>
+            <AqiTile label={t('air.today')} reading={current} />
+            <AqiTile label={t('air.tomorrow')} reading={tomorrow} note={t('air.forecast')} />
           </View>
-          <View style={styles.side}>
-            <SourceLabel reading={current} />
-            {tomorrow ? (
-              <View style={styles.tomorrow}>
-                <AppText variant="caption" color={colors.inkSubtle}>
-                  {t('air.tomorrow')}
-                </AppText>
-                <View style={styles.tomorrowValue}>
-                  <View
-                    style={[styles.dot, { backgroundColor: aqiColors[tomorrow.category].swatch }]}
-                  />
-                  <AppText variant="calloutStrong">
-                    {tomorrow.aqi} · {t(`air.categories.${tomorrow.category}`)}
-                  </AppText>
-                </View>
-              </View>
-            ) : null}
-          </View>
+          {current ? <SourceLabel reading={current} /> : null}
         </View>
       ) : !loading ? (
         <AppText variant="callout" color={colors.inkSubtle} style={styles.unavailable}>
@@ -111,36 +88,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primarySoft,
   },
   body: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    gap: spacing.lg,
+    gap: spacing.sm,
     marginTop: spacing.md,
   },
-  metric: {
-    minWidth: 112,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-    borderRadius: radius.md,
-  },
-  side: {
-    flex: 1,
-    justifyContent: 'space-between',
-    gap: spacing.sm,
-  },
-  tomorrow: {
-    gap: spacing.xxs,
-  },
-  tomorrowValue: {
+  tiles: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.xs + 2,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: radius.pill,
+    gap: spacing.sm,
   },
   unavailable: {
     marginTop: spacing.sm,

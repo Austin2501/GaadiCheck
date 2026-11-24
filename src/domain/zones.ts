@@ -1,7 +1,7 @@
 import type { LocalizedText, ZoneId } from './types';
 
 export interface CpcbLocation {
-  /** State as expected by the data.gov.in filter (multi-word states use underscores). */
+  /** State and city exactly as the data.gov.in feed spells them (spaces, not underscores). */
   state: string;
   city: string;
 }
@@ -41,7 +41,7 @@ export const ZONES: readonly Zone[] = [
     name: { en: 'Ghaziabad', hi: 'गाज़ियाबाद' },
     shortName: { en: 'Ghaziabad', hi: 'गाज़ियाबाद' },
     centroid: { latitude: 28.6692, longitude: 77.4538 },
-    cpcb: [{ state: 'Uttar_Pradesh', city: 'Ghaziabad' }],
+    cpcb: [{ state: 'Uttar Pradesh', city: 'Ghaziabad' }],
   },
   {
     id: 'gautam-buddh-nagar',
@@ -49,8 +49,8 @@ export const ZONES: readonly Zone[] = [
     shortName: { en: 'Noida', hi: 'नोएडा' },
     centroid: { latitude: 28.5355, longitude: 77.391 },
     cpcb: [
-      { state: 'Uttar_Pradesh', city: 'Noida' },
-      { state: 'Uttar_Pradesh', city: 'Greater_Noida' },
+      { state: 'Uttar Pradesh', city: 'Noida' },
+      { state: 'Uttar Pradesh', city: 'Greater Noida' },
     ],
   },
   {

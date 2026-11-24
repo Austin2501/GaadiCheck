@@ -7,9 +7,9 @@ import { RefreshControl, StyleSheet, View } from 'react-native';
 import { Wordmark } from '@/components/brand/Wordmark';
 import { AppText, Banner, Button, EmptyState, Screen, SectionHeader } from '@/components/ui';
 import type { LanguageCode } from '@/domain/types';
+import { AirTodayCard } from '@/features/today/AirTodayCard';
 import { DocumentList } from '@/features/today/DocumentList';
 import { StageCard } from '@/features/today/StageCard';
-import { TomorrowCard } from '@/features/today/TomorrowCard';
 import { VehicleSwitcher } from '@/features/today/VehicleSwitcher';
 import { VerdictHero } from '@/features/today/VerdictHero';
 import { ZoneList } from '@/features/today/ZoneList';
@@ -64,6 +64,7 @@ export default function Today() {
       <Screen>
         {header}
         {stageCard}
+        <AirTodayCard zone="delhi" currentStage={grap.data.data.stage} />
         <EmptyState
           icon="car-sport-outline"
           title={t('today.emptyTitle')}
@@ -102,14 +103,13 @@ export default function Today() {
       />
 
       {stageCard}
+      <AirTodayCard zone={vehicle.homeZone} currentStage={assessment.stage} />
 
       <SectionHeader title={t('today.areasTitle')} />
       <ZoneList vehicle={vehicle} zones={assessment.zones} />
 
       <SectionHeader title={t('today.documentsTitle')} />
       <DocumentList documents={assessment.documents} onEdit={editVehicle} />
-
-      <TomorrowCard zone={vehicle.homeZone} currentStage={assessment.stage} />
 
       <View style={styles.footnote}>
         <AppText variant="caption" color={colors.inkSubtle} align="center">
