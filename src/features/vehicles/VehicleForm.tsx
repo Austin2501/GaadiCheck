@@ -49,7 +49,7 @@ import {
   toVehicleInput,
   type VehicleFormError,
   type VehicleFormValues,
-} from './vehicleForm';
+} from './vehicleFormSchema';
 
 interface VehicleFormProps {
   initial?: Vehicle | null;
