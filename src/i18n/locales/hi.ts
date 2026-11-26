@@ -326,6 +326,11 @@ const hi: Translation = {
     reminderTitleDays: '{{document}} {{count}} दिन में खत्म हो रहा है',
     reminderBody: '{{plate}} · चालान से बचने के लिए {{date}} से पहले रिन्यू करें।',
   },
+  update: {
+    title: 'अपडेट तैयार है',
+    body: 'GaadiCheck का नया वर्ज़न डाउनलोड हो गया है।',
+    restart: 'अभी अपडेट करें',
+  },
   errors: {
     refreshFailed: 'रिफ़्रेश नहीं हो सका। सेव की गई जानकारी दिख रही है।',
     notFoundTitle: 'पेज नहीं मिला',

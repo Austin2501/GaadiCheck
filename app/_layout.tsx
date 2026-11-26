@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { LaunchOverlay } from '@/features/launch/LaunchOverlay';
+import { useForegroundUpdateCheck } from '@/hooks/useAppUpdate';
 import { useDeviceSync } from '@/hooks/useDeviceSync';
 import { applyLanguage } from '@/i18n';
 import {
@@ -42,6 +43,7 @@ const QUERY_CACHE_BUSTER = '1';
 
 function DeviceSync() {
   useDeviceSync();
+  useForegroundUpdateCheck();
   const pathname = usePathname();
   useEffect(() => trackScreen(pathname), [pathname]);
   return null;

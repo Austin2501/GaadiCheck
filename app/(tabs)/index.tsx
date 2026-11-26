@@ -14,6 +14,7 @@ import { VehicleSwitcher } from '@/features/today/VehicleSwitcher';
 import { VerdictHero } from '@/features/today/VerdictHero';
 import { ZoneList } from '@/features/today/ZoneList';
 import { queryKeys, useGrapStatus } from '@/hooks/queries';
+import { useUpdateReady } from '@/hooks/useAppUpdate';
 import { useAssessment } from '@/hooks/useAssessment';
 import { formatCalendarDate, formatShortDay } from '@/i18n/format';
 import { useActiveVehicle, useGarage } from '@/store/garage';
@@ -29,6 +30,7 @@ export default function Today() {
   const assessment = useAssessment(vehicle);
   const grap = useGrapStatus();
   const [refreshing, setRefreshing] = useState(false);
+  const update = useUpdateReady();
 
   const refresh = async () => {
     setRefreshing(true);
@@ -51,6 +53,16 @@ export default function Today() {
     </View>
   );
 
+  const updateBanner = update.ready ? (
+    <Banner
+      tone="info"
+      icon="sparkles-outline"
+      title={t('update.title')}
+      message={t('update.body')}
+      action={{ label: t('update.restart'), onPress: update.restart }}
+    />
+  ) : null;
+
   const stageCard = (
     <StageCard
       status={grap.data.data}
@@ -63,6 +75,7 @@ export default function Today() {
     return (
       <Screen>
         {header}
+        {updateBanner}
         {stageCard}
         <AirTodayCard zone="delhi" currentStage={grap.data.data.stage} />
         <EmptyState
@@ -88,6 +101,7 @@ export default function Today() {
       }
     >
       {header}
+      {updateBanner}
       {grap.isRefetchError ? <Banner tone="warning" message={t('errors.refreshFailed')} /> : null}
 
       {vehicles.length > 1 ? (

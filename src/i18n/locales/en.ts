@@ -326,6 +326,11 @@ const en = {
     reminderTitleDays: '{{document}} expires in {{count}} days',
     reminderBody: '{{plate}} · renew before {{date}} to stay challan-free.',
   },
+  update: {
+    title: 'Update ready',
+    body: 'A newer version of GaadiCheck has downloaded.',
+    restart: 'Restart to update',
+  },
   errors: {
     refreshFailed: 'Couldn’t refresh. Showing the last saved data.',
     notFoundTitle: 'Page not found',
