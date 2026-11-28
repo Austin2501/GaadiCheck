@@ -50,6 +50,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: isDevVariant ? 'com.gaadicheck.app.dev' : 'com.gaadicheck.app',
+    // Vehicle details must stay on this phone, as the app promises; Android Auto Backup would
+    // copy them to Google Drive and restore them after an uninstall.
+    allowBackup: false,
     adaptiveIcon: {
       foregroundImage: './assets/android-icon-foreground.png',
       backgroundImage: './assets/android-icon-background.png',
