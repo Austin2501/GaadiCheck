@@ -5,25 +5,32 @@
 <p align="center"><strong>Know before you drive.</strong><br/>
 Today's GRAP verdict for your exact vehicle across Delhi-NCR — district by district, every morning.</p>
 
+<p align="center">
+  <a href="https://gaadicheck.expo.app">Website</a> ·
+  <a href="https://gaadicheck.expo.app/app/">Web app</a> ·
+  <a href="https://github.com/Austin2501/GaadiCheck/releases/latest/download/GaadiCheck.apk">Download APK</a> ·
+  <a href="docs/README.md">Documentation</a>
+</p>
+
 ---
 
 Delhi-NCR's Graded Response Action Plan (GRAP) switches anti-pollution curbs on and off at short notice, and whether a vehicle may be driven depends on its fuel, BS norm, registration state and the current stage. Cameras now issue challans automatically. GaadiCheck turns all of that into a single, explainable answer for each vehicle you own.
 
 ## Features
 
-|                              |                                                                                                                                                                    |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Personal verdict**         | Allowed / not allowed / check for each of Delhi, Gurugram, Faridabad, Ghaziabad, Gautam Buddh Nagar and Sonipat, with the reason, the fine and a link to the order |
-| **Data-driven rules engine** | GRAP restrictions live in `data/rules.json`; tri-state evaluation asks for missing details instead of guessing                                                     |
-| **Live GRAP stage**          | Fetched from a JSON feed, cached for offline use, with a bundled fallback                                                                                          |
-| **Air quality**              | Official CPCB station AQI (data.gov.in) with Open-Meteo forecasts converted to India's AQI scale; tomorrow's outlook and the stage it implies                      |
-| **Document reminders**       | Local notifications 7 days and 1 day before PUC and insurance expire; first-year PUC cover and end-of-life age checks                                              |
-| **Stage-change alerts**      | FCM topic subscriptions derived from the rules each vehicle could fall under — no server, no personal data                                                         |
-| **RC / PUC scanning**        | On-device OCR (ML Kit / Apple Vision) fills fuel, BS norm, registration date and PUC expiry from a screenshot                                                      |
-| **Smart defaults**           | Plate parsing (incl. Bharat series), home district from RTO code or location, BS-norm suggestion from registration date                                            |
-| **Share card**               | Branded 4:5 status image with a ready-to-paste caption                                                                                                             |
-| **Bilingual**                | Every screen, reminder and alert in English and Hindi                                                                                                              |
-| **Accessible**               | Status is always icon + text + colour, 48 dp targets, screen-reader labels, dynamic type                                                                           |
+|                              |                                                                                                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Personal verdict**         | Allowed / not allowed / check for each of Delhi, Gurugram, Faridabad, Ghaziabad, Gautam Buddh Nagar and Sonipat, with the reason, the fine and a link to the order  |
+| **Data-driven rules engine** | GRAP restrictions live in `data/rules.json`; tri-state evaluation asks for missing details instead of guessing                                                      |
+| **Live GRAP stage**          | Fetched from a JSON feed, cached for offline use, with a bundled fallback                                                                                           |
+| **Air quality**              | Official CPCB station AQI (data.gov.in) with Open-Meteo forecasts converted to India's AQI scale; tomorrow's outlook and the stage it implies                       |
+| **Document reminders**       | Local notifications 7 days and 1 day before PUC and insurance expire; first-year PUC cover and end-of-life age checks                                               |
+| **Stage-change alerts**      | _Coming soon._ FCM topic subscriptions derived from the rules each vehicle could fall under — no server, no personal data. Switches on once Firebase is configured. |
+| **RC / PUC scanning**        | On-device OCR (ML Kit / Apple Vision) fills fuel, BS norm, registration date and PUC expiry from a screenshot                                                       |
+| **Smart defaults**           | Plate parsing (incl. Bharat series), home district from RTO code or location, BS-norm suggestion from registration date                                             |
+| **Share card**               | Branded 4:5 status image with a ready-to-paste caption                                                                                                              |
+| **Bilingual**                | Every screen, reminder and alert in English and Hindi                                                                                                               |
+| **Accessible**               | Status is always icon + text + colour, 48 dp targets, screen-reader labels, dynamic type                                                                            |
 
 ## Tech stack
 
@@ -94,7 +101,7 @@ cp .env.example .env      # all values optional
 npx expo run:android      # builds and installs a development build
 ```
 
-Subsequent runs only need `npm start`. To try the app without a native build, install Expo Go on the phone and run `npm run start:go`; everything except document scanning and stage alerts works there, since those two need native modules.
+Subsequent runs only need `npm start`. For the web version, run `npm run start:web`. To try the app without a native build, install Expo Go on the phone and run `npm run start:go`; everything except document scanning and stage alerts works there, since those two need native modules.
 
 ### Environment
 
@@ -156,7 +163,9 @@ Take the dates, hours, fine (`fineInr`) and exemptions from the official order b
 4. Devices subscribe to `ncr-all`, `zone-<district>` and one topic per rule that could restrict them (`rule-grap3`, `rule-delhi-entry`, `rule-goods`).
 5. To alert users, send a notification from **Firebase console → Messaging** to the relevant topic — e.g. `rule-grap3` when Stage III is invoked.
 
-## Building an APK
+## Building and releasing
+
+See [docs/releasing.md](docs/releasing.md) for over-the-air updates, GitHub Releases and the website (`npm run deploy:web`). The short version for an APK:
 
 ```bash
 npm install -g eas-cli

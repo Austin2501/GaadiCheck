@@ -2,12 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script>
+    // The host serves this page for /app (no trailing slash); the web app lives at /app/.
+    if (location.pathname === '/app') location.replace('/app/' + location.search + location.hash);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GaadiCheck — Know before you drive</title>
   <meta name="description" content="Can your vehicle be on the road today? GaadiCheck checks Delhi-NCR's GRAP rules for your exact car, district by district, and reminds you before your PUC expires." />
   <meta property="og:title" content="GaadiCheck — Know before you drive" />
   <meta property="og:description" content="Today's GRAP verdict for your exact vehicle across Delhi, Gurugram, Noida, Ghaziabad, Faridabad and Sonipat." />
   <meta name="theme-color" content="#4338CA" />
+  <link rel="canonical" href="https://gaadicheck.expo.app/" />
+  <meta property="og:url" content="https://gaadicheck.expo.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://gaadicheck.expo.app/assets/apple-touch-icon.png" />
   <link rel="icon" href="assets/favicon.png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,6 +38,8 @@
     .btn-primary { background: var(--marigold); color: var(--ink); }
     .btn-ghost { color: #fff; border: 1px solid rgba(255,255,255,.35); }
     .btn-dark { background: var(--indigo); color: #fff; }
+    .soon { display: inline-block; vertical-align: middle; margin-left: 6px; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0; color: var(--indigo); background: var(--soft); padding: 2px 8px; border-radius: 999px; }
+    .cta .alt { display: block; margin-top: 16px; color: var(--muted-indigo); font-size: 15px; }
 
     header { position: sticky; top: 0; z-index: 10; background: rgba(67,56,202,.96); backdrop-filter: blur(8px); }
     nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
@@ -123,8 +133,9 @@
         <a href="#how">How it works</a>
         <a href="#features">Features</a>
         <a href="#faq">FAQ</a>
-        <!-- Replace with the GitHub Releases URL once v1.0.0 is published -->
-        <a class="btn btn-primary" href="#download">Download APK</a>
+        <a href="/app/">Web app</a>
+        <!-- Always the newest GitHub release; attach the APK as exactly GaadiCheck.apk -->
+        <a class="btn btn-primary" href="https://github.com/Austin2501/GaadiCheck/releases/latest/download/GaadiCheck.apk">Download APK</a>
       </div>
     </nav>
   </header>
@@ -137,8 +148,8 @@
           <h1>Know before<br />you <em>drive.</em></h1>
           <p class="lead">GRAP stages switch on overnight, and the rules depend on your fuel, BS norm and where your car is registered. GaadiCheck gives you a clear yes or no for your exact vehicle — district by district, every morning.</p>
           <div class="ctas">
-            <a class="btn btn-primary" id="download" href="#">⬇ Download for Android</a>
-            <a class="btn btn-ghost" href="#how">See how it works</a>
+            <a class="btn btn-primary" id="download" href="https://github.com/Austin2501/GaadiCheck/releases/latest/download/GaadiCheck.apk">⬇ Download for Android</a>
+            <a class="btn btn-ghost" href="/app/">Open the web app →</a>
           </div>
           <small>Free · English &amp; हिन्दी · No sign-up · Independent, not a government app</small>
         </div>
@@ -190,7 +201,7 @@
         <div class="steps">
           <div class="card step"><h3>Add your vehicle</h3><p>Type the number, or scan an RC screenshot from mParivahan. We suggest the BS norm from the registration date — you confirm it.</p></div>
           <div class="card step"><h3>Get today's verdict</h3><p>See whether you can drive in each NCR district, why, the fine at stake, and a link to the official order behind every rule.</p></div>
-          <div class="card step"><h3>Stay ahead</h3><p>Get alerted when a GRAP stage change affects your car, and reminded a week before your PUC or insurance lapses.</p></div>
+          <div class="card step"><h3>Stay ahead</h3><p>Get reminded a week before your PUC or insurance lapses. Alerts for GRAP stage changes are coming soon.</p></div>
         </div>
       </div>
     </section>
@@ -201,7 +212,7 @@
         <div class="features">
           <div class="card feature"><div class="icon">🚦</div><h3>Every district at once</h3><p>Delhi plus Gurugram, Noida, Ghaziabad, Faridabad and Sonipat — including Delhi's winter entry rule for outside cars.</p></div>
           <div class="card feature"><div class="icon">📄</div><h3>Reads your RC for you</h3><p>On-device text recognition fills in fuel, BS norm and registration date from a screenshot. Nothing is uploaded.</p></div>
-          <div class="card feature"><div class="icon">🔔</div><h3>Stage-change alerts</h3><p>A notification only when a change affects one of your vehicles. No spam, no promotions.</p></div>
+          <div class="card feature"><div class="icon">🔔</div><h3>Stage-change alerts <span class="soon">Coming soon</span></h3><p>A notification only when a change affects one of your vehicles. Until then, the app always shows the stage in force.</p></div>
           <div class="card feature"><div class="icon">🌫️</div><h3>Official air quality</h3><p>CPCB station readings by district, plus tomorrow's outlook so a stricter stage never takes you by surprise.</p></div>
           <div class="card feature"><div class="icon">🧾</div><h3>No surprise challans</h3><p>PUC and insurance reminders, and a one-tap finder for the nearest PUC centre.</p></div>
           <div class="card feature"><div class="icon">अ</div><h3>English and हिन्दी</h3><p>Every screen, alert and reminder in both languages — switch any time.</p></div>
@@ -218,7 +229,7 @@
         <ul>
           <li>Registration numbers and dates are stored only on your device.</li>
           <li>RC and PUC images are read on the phone and discarded.</li>
-          <li>Alerts use anonymous topics like "zone-ghaziabad" — never your number.</li>
+          <li>Stage alerts, when they arrive, will use anonymous topics like "zone-ghaziabad" — never your number.</li>
           <li>Location is used once, only if you ask, to pick your district.</li>
         </ul>
       </div>
@@ -231,7 +242,9 @@
           <details><summary>Is GaadiCheck an official government app?</summary><p>No. GaadiCheck is independent and not affiliated with CAQM, CPCB or any government body. We publish the rules we apply with a link to the official source, and you should always follow the latest order and on-ground instructions.</p></details>
           <details><summary>Where does the data come from?</summary><p>GRAP stages and rules come from CAQM orders. Official air quality comes from the Central Pollution Control Board via data.gov.in, and forecasts from Open-Meteo using Copernicus data.</p></details>
           <details><summary>Does it work offline?</summary><p>Yes. The last known stage and your verdicts are cached, and the app tells you when it is showing saved data.</p></details>
-          <details><summary>Is there an iPhone version?</summary><p>Android comes first. The app is built cross-platform, so iOS can follow.</p></details>
+          <details><summary>Can I use it without installing anything?</summary><p>Yes — <a href="/app/">open the web app</a> in any browser. Your vehicles are saved in that browser only. PUC and insurance reminders and reading your RC from a screenshot need the Android app.</p></details>
+          <details><summary>How do I install the APK?</summary><p>Tap <a href="https://github.com/Austin2501/GaadiCheck/releases/latest/download/GaadiCheck.apk">Download for Android</a> on your phone and open the file. If Android asks, allow “Install unknown apps” for your browser. Play Protect may show a warning because the app isn’t on the Play Store yet — tap “More details”, then “Install anyway”. The app updates itself after that.</p></details>
+          <details><summary>Is there an iPhone version?</summary><p>Not yet as an app — on iPhone, use the <a href="/app/">web app</a> in Safari. The app is built cross-platform, so iOS can follow.</p></details>
         </div>
       </div>
     </section>
@@ -241,7 +254,8 @@
         <div class="cta">
           <h2>Check before you turn the key.</h2>
           <p>Free for Android. Takes thirty seconds to set up.</p>
-          <a class="btn btn-primary" href="#download">⬇ Download the APK</a>
+          <a class="btn btn-primary" href="https://github.com/Austin2501/GaadiCheck/releases/latest/download/GaadiCheck.apk">⬇ Download the APK</a>
+          <a class="alt" href="/app/">or open GaadiCheck in your browser →</a>
         </div>
       </div>
     </section>

@@ -1,10 +1,10 @@
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Alert } from 'react-native';
 
 import { formatPlate } from '@/domain/registration';
 import { VehicleForm } from '@/features/vehicles/VehicleForm';
 import { track } from '@/services/analytics';
+import { confirmAction } from '@/services/confirm';
 import { useGarage, useVehicle } from '@/store/garage';
 
 export default function EditVehicle() {
@@ -16,23 +16,20 @@ export default function EditVehicle() {
 
   if (!vehicle) return <Redirect href="/(tabs)/vehicles" />;
 
-  const confirmRemove = () => {
-    Alert.alert(
-      t('vehicle.removeTitle'),
-      t('vehicle.removeBody', { plate: formatPlate(vehicle.plate) }),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('vehicle.remove'),
-          style: 'destructive',
-          onPress: () => {
-            removeVehicle(vehicle.id);
-            track('vehicle_removed');
-            router.back();
-          },
-        },
-      ],
-    );
+  const confirmRemove = async () => {
+    const confirmed = await confirmAction({
+      title: t('vehicle.removeTitle'),
+      message: t('vehicle.removeBody', { plate: formatPlate(vehicle.plate) }),
+      confirmLabel: t('vehicle.remove'),
+      cancelLabel: t('common.cancel'),
+      destructive: true,
+    });
+    if (!confirmed) return;
+    removeVehicle(vehicle.id);
+    track('vehicle_removed');
+    // A deep-linked edit screen on web has nothing to go back to.
+    if (router.canGoBack()) router.back();
+    else router.replace('/(tabs)/vehicles');
   };
 
   return (
@@ -43,9 +40,10 @@ export default function EditVehicle() {
       onSubmit={(input) => {
         updateVehicle(vehicle.id, input);
         track('vehicle_updated');
-        router.back();
+        if (router.canGoBack()) router.back();
+        else router.replace('/(tabs)/vehicles');
       }}
-      onRemove={confirmRemove}
+      onRemove={() => void confirmRemove()}
     />
   );
 }

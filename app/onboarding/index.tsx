@@ -94,7 +94,10 @@ export default function Welcome() {
             onPress={() => router.push({ pathname: '/vehicle/new', params: { onboarding: '1' } })}
           />
           <AppText variant="caption" color={colors.inkSubtle} align="center">
-            {t('common.disclaimerShort')}
+            <AppText variant="caption" color={colors.primary}>
+              {t('common.appName')}
+            </AppText>
+            {` · ${t('onboarding.footer')}`}
           </AppText>
         </View>
       }

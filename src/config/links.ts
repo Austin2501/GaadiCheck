@@ -1,4 +1,6 @@
 export const LINKS = {
+  /** Always the newest release; the APK must be attached as exactly `GaadiCheck.apk`. */
+  androidApk: 'https://github.com/Austin2501/GaadiCheck/releases/latest/download/GaadiCheck.apk',
   caqm: 'https://caqm.nic.in',
   echallan: 'https://echallan.parivahan.gov.in',
   pucStatus: 'https://vahan.parivahan.gov.in/puc',

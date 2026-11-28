@@ -6,12 +6,18 @@ import type { BsNorm, FuelType, IsoDate, Vehicle, VehicleType, ZoneId } from '@/
 import type { VehicleInput } from '@/store/garage';
 
 /** Validation messages are translation keys under `vehicle.*`. */
-export type VehicleFormError = 'plateInvalid' | 'plateDuplicate' | 'required';
+export type VehicleFormError =
+  | 'plateRequired'
+  | 'plateInvalid'
+  | 'plateDuplicate'
+  | 'delhiRequired'
+  | 'homeZoneRequired'
+  | 'dateInvalid';
 
 const isoDateOrNull = z
   .string()
   .nullable()
-  .refine((value) => value === null || isIsoDate(value), { message: 'required' });
+  .refine((value) => value === null || isIsoDate(value), { message: 'dateInvalid' });
 
 export function createVehicleFormSchema(existingPlates: readonly string[]) {
   const taken = new Set(existingPlates.map(normalizePlate));
@@ -20,6 +26,7 @@ export function createVehicleFormSchema(existingPlates: readonly string[]) {
     .object({
       plate: z
         .string()
+        .refine((value) => value.trim().length > 0, { message: 'plateRequired', abort: true })
         .refine((value) => parsePlate(value) !== null, { message: 'plateInvalid' })
         .refine((value) => !taken.has(normalizePlate(value)), { message: 'plateDuplicate' }),
       nickname: z.string().max(40),
@@ -31,14 +38,14 @@ export function createVehicleFormSchema(existingPlates: readonly string[]) {
       homeZone: z
         .enum(['delhi', 'gurugram', 'faridabad', 'ghaziabad', 'gautam-buddh-nagar', 'sonipat'])
         .nullable()
-        .refine((value) => value !== null, { message: 'required' }),
+        .refine((value) => value !== null, { message: 'homeZoneRequired' }),
       pucExpiry: isoDateOrNull,
       insuranceExpiry: isoDateOrNull,
       essentialService: z.boolean(),
     })
     .superRefine((values, context) => {
       if (parsePlate(values.plate)?.kind === 'bharat' && values.registeredInDelhi === null) {
-        context.addIssue({ code: 'custom', path: ['registeredInDelhi'], message: 'required' });
+        context.addIssue({ code: 'custom', path: ['registeredInDelhi'], message: 'delhiRequired' });
       }
     });
 }

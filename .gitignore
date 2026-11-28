@@ -48,3 +48,6 @@ GoogleService-Info.plist
 
 # test output
 coverage/
+
+# APKs staged for GitHub Releases
+release/

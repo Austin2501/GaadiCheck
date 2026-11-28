@@ -27,6 +27,12 @@ const easProjectId = process.env.EAS_PROJECT_ID?.trim() || 'b214050b-4dd8-4cc6-8
 
 const googleServicesFile = resolveGoogleServicesFile();
 
+/**
+ * The web app is served under /app so the landing page can own the site root. Only
+ * `npm run build:web` sets this; native builds and `expo start --web` stay at the root.
+ */
+const webBaseUrl = process.env.WEB_BASE_URL?.trim() || undefined;
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   owner: easOwner,
@@ -56,7 +62,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   web: {
     favicon: './assets/favicon.png',
+    output: 'single',
+    name: 'GaadiCheck',
+    shortName: 'GaadiCheck',
+    description:
+      'Can your vehicle be on the road today? GRAP rules for your exact car across Delhi-NCR.',
+    themeColor: BRAND_INDIGO,
+    backgroundColor: BRAND_CANVAS,
   },
+  ...(webBaseUrl ? { experiments: { baseUrl: webBaseUrl } } : {}),
   plugins: [
     // Must stay ahead of expo-notifications; see the plugin for why.
     './plugins/withFirebaseNotificationDefaults',

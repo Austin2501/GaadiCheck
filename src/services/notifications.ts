@@ -122,6 +122,8 @@ export async function syncDocumentReminders(
   policy: DocumentPolicy,
   enabled: boolean,
 ): Promise<void> {
+  // Browsers can't schedule local notifications; reminders are an Android-app feature.
+  if (Platform.OS === 'web') return;
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   await Promise.all(
     scheduled

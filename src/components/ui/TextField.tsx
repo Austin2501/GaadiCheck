@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type ComponentRef, type ReactNode, type Ref } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
@@ -12,6 +12,7 @@ interface TextFieldProps extends Omit<TextInputProps, 'style'> {
   error?: string;
   /** Larger, letter-spaced input used for registration numbers. */
   emphasis?: boolean;
+  ref?: Ref<ComponentRef<typeof TextInput>>;
 }
 
 export function TextField({
@@ -19,6 +20,7 @@ export function TextField({
   hint,
   error,
   emphasis = false,
+  ref,
   onFocus,
   onBlur,
   ...inputProps
@@ -33,6 +35,7 @@ export function TextField({
         {label}
       </AppText>
       <TextInput
+        ref={ref}
         accessibilityLabel={label}
         placeholderTextColor={colors.inkDisabled}
         selectionColor={colors.primary}

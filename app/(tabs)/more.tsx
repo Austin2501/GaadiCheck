@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Linking, Platform, Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { AppText, Banner, Card, ListRow, Screen, SectionHeader } from '@/components/ui';
 import type { LanguageCode } from '@/domain/types';
@@ -82,6 +82,8 @@ export default function More() {
   const requestDeviceSync = usePreferences((state) => state.requestDeviceSync);
   const [permission, setPermission] = useState<NotificationPermission>('undetermined');
   const alertsSupported = isStageAlertsSupported();
+  // Browsers can't schedule local notifications, so reminders live in the Android app.
+  const remindersSupported = Platform.OS !== 'web';
 
   useFocusEffect(
     useCallback(() => {
@@ -117,35 +119,61 @@ export default function More() {
         <ListRow
           icon="megaphone-outline"
           title={t('more.alerts')}
-          subtitle={alertsSupported ? t('more.alertsHint') : t('more.alertsUnavailable')}
+          subtitle={alertsSupported ? t('more.alertsHint') : t('more.alertsSoon')}
           trailing={
-            <PreferenceSwitch
-              label={t('more.alerts')}
-              value={alertsSupported && alertsEnabled && permission === 'granted'}
-              disabled={!alertsSupported}
-              onChange={(value) => void toggle('alerts', value)}
-            />
+            alertsSupported ? (
+              <PreferenceSwitch
+                label={t('more.alerts')}
+                value={alertsEnabled && permission === 'granted'}
+                onChange={(value) => void toggle('alerts', value)}
+              />
+            ) : (
+              // Needs Firebase in the build; shown honestly rather than as a dead switch.
+              <View style={styles.soonTag}>
+                <AppText variant="caption" color={colors.primary}>
+                  {t('more.comingSoon')}
+                </AppText>
+              </View>
+            )
           }
         />
         <ListRow
           icon="alarm-outline"
           title={t('more.reminders')}
-          subtitle={t('more.remindersHint')}
+          subtitle={remindersSupported ? t('more.remindersHint') : t('more.remindersAppOnly')}
           trailing={
-            <PreferenceSwitch
-              label={t('more.reminders')}
-              value={remindersEnabled && permission === 'granted'}
-              onChange={(value) => void toggle('reminders', value)}
-            />
+            remindersSupported ? (
+              <PreferenceSwitch
+                label={t('more.reminders')}
+                value={remindersEnabled && permission === 'granted'}
+                onChange={(value) => void toggle('reminders', value)}
+              />
+            ) : (
+              <View style={styles.soonTag}>
+                <AppText variant="caption" color={colors.primary}>
+                  {t('more.androidApp')}
+                </AppText>
+              </View>
+            )
           }
           last
         />
       </Card>
-      {permission === 'denied' ? (
+      {remindersSupported && permission === 'denied' ? (
         <Banner
           tone="warning"
           message={t('more.notificationsOff')}
           action={{ label: t('more.openSettings'), onPress: () => void Linking.openSettings() }}
+        />
+      ) : null}
+
+      {Platform.OS === 'web' ? (
+        <Banner
+          tone="info"
+          icon="logo-android"
+          title={t('more.getAppTitle')}
+          message={t('more.getAppBody')}
+          action={{ label: t('more.getAppAction'), onPress: () => void openLink('androidApk') }}
         />
       ) : null}
 
@@ -204,6 +232,12 @@ export default function More() {
 }
 
 const styles = StyleSheet.create({
+  soonTag: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: radius.pill,
+    backgroundColor: colors.primarySoft,
+  },
   segmented: {
     flexDirection: 'row',
     padding: 3,

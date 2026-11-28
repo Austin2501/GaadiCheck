@@ -37,6 +37,7 @@ const en = {
     point3Title: 'No surprise challans',
     point3Body: 'Reminders before your PUC and insurance expire.',
     cta: 'Add my vehicle',
+    footer: 'Free · No sign-up · Your vehicle details stay on this phone',
     permissionsTitle: 'Stay a step ahead',
     permissionsBody: 'Turn on notifications and GaadiCheck will tell you:',
     permissionsBullet1: 'When a GRAP stage change affects your vehicle',
@@ -124,7 +125,15 @@ const en = {
     remove: 'Remove vehicle',
     removeTitle: 'Remove this vehicle?',
     removeBody: '{{plate}} and its reminders will be removed from this phone.',
-    required: 'Required',
+    plateRequired: 'Enter your vehicle’s registration number, as printed on the RC.',
+    delhiRequired: 'Choose Yes or No — BH-series plates don’t show the state.',
+    homeZoneRequired: 'Choose the area you drive in most, or tap “Use my location”.',
+    dateInvalid: 'Pick a valid date.',
+    fixTitle_one: '1 detail is missing',
+    fixTitle_other: '{{count}} details are missing',
+    fixBody: 'Please complete: {{fields}}',
+    fieldDelhi: 'Registered in Delhi',
+    removeFailed: 'Couldn’t remove the vehicle. Please try again.',
   },
   garage: {
     title: 'My vehicles',
@@ -172,7 +181,8 @@ const en = {
     documentsTitle: 'Documents',
     airTitle: 'Air in {{zone}}',
     airOpen: 'See air quality in every district',
-    airStageHint: 'At this level CAQM may move to Stage {{stage}}. We’ll update you if it does.',
+    airStageHint:
+      'At this level CAQM may move to Stage {{stage}}. GaadiCheck shows any change here as soon as it’s announced.',
     share: 'Share today’s status',
     emptyTitle: 'Add your first vehicle',
     emptyBody: 'We’ll check today’s rules for it straight away.',
@@ -242,7 +252,14 @@ const en = {
     language: 'Language',
     alerts: 'GRAP stage alerts',
     alertsHint: 'Notify me when a stage change affects my vehicles.',
-    alertsUnavailable: 'Stage alerts arrive with the installed app once notifications are set up.',
+    alertsSoon:
+      'Coming soon: a notification when a GRAP stage change affects your vehicle. Until then, the Today tab always shows the stage in force.',
+    comingSoon: 'Coming soon',
+    remindersAppOnly: 'PUC and insurance reminders work in the Android app.',
+    androidApp: 'Android app',
+    getAppTitle: 'Get the Android app',
+    getAppBody: 'Adds PUC and insurance reminders and reads your RC from a screenshot.',
+    getAppAction: 'Download APK',
     reminders: 'Document reminders',
     remindersHint: 'A week and a day before PUC and insurance expire.',
     notificationsOff: 'Notifications are off for GaadiCheck.',
@@ -318,6 +335,7 @@ const en = {
       '{{headline}} · {{plate}} · GRAP Stage {{stage}}. Checked on GaadiCheck — know before you drive. #GaadiCheck #BuildForMyCity #TutedudeBuildathon',
     cardFooter: 'Checked on GaadiCheck',
     unavailable: 'Sharing isn’t available on this device.',
+    failed: 'Couldn’t create the image. Please try again.',
   },
   notifications: {
     channelReminders: 'Document reminders',
@@ -335,6 +353,9 @@ const en = {
     refreshFailed: 'Couldn’t refresh. Showing the last saved data.',
     notFoundTitle: 'Page not found',
     goHome: 'Go to Today',
+    crashTitle: 'Something went wrong',
+    crashBody:
+      'GaadiCheck hit an unexpected problem. Your vehicles are safe on this phone. Please try again.',
   },
 };
 

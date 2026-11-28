@@ -1,4 +1,4 @@
-import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
+import type { ComponentRef, PropsWithChildren, ReactElement, ReactNode, Ref } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -21,6 +21,8 @@ interface ScreenProps extends PropsWithChildren {
   refreshControl?: ReactElement<RefreshControlProps>;
   contentStyle?: StyleProp<ViewStyle>;
   background?: string;
+  /** Lets a screen scroll itself, e.g. to the first invalid form field. */
+  scrollRef?: Ref<ComponentRef<typeof ScrollView>>;
 }
 
 export function Screen({
@@ -31,11 +33,13 @@ export function Screen({
   refreshControl,
   contentStyle,
   background = colors.canvas,
+  scrollRef,
 }: ScreenProps) {
   const insets = useSafeAreaInsets();
 
   const body = scroll ? (
     <ScrollView
+      ref={scrollRef}
       contentContainerStyle={[styles.content, contentStyle]}
       keyboardShouldPersistTaps="handled"
       refreshControl={refreshControl}

@@ -4,12 +4,17 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Icon, Screen } from '@/components/ui';
+import { isStageAlertsSupported } from '@/services/alerts';
 import { track } from '@/services/analytics';
 import { requestNotificationPermission } from '@/services/notifications';
 import { usePreferences } from '@/store/preferences';
 import { colors, radius, spacing } from '@/theme';
 
-const BULLETS = ['permissionsBullet1', 'permissionsBullet2', 'permissionsBullet3'] as const;
+const ALL_BULLETS = ['permissionsBullet1', 'permissionsBullet2', 'permissionsBullet3'] as const;
+// Only promise stage alerts when this build can actually deliver them.
+const BULLETS = isStageAlertsSupported()
+  ? ALL_BULLETS
+  : ALL_BULLETS.filter((key) => key !== 'permissionsBullet1');
 
 export default function NotificationPermission() {
   const { t } = useTranslation();

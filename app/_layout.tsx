@@ -34,7 +34,7 @@ import { usePreferences } from '@/store/preferences';
 import { useStoresHydrated } from '@/store/useStoresHydrated';
 import { colors, fontForLanguage, fonts } from '@/theme';
 
-export { ErrorBoundary } from 'expo-router';
+export { AppErrorBoundary as ErrorBoundary } from '@/components/AppErrorBoundary';
 
 void SplashScreen.preventAutoHideAsync();
 

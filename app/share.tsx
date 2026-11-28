@@ -1,7 +1,7 @@
 import { Redirect } from 'expo-router';
 import { useRef, useState, type ComponentRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { AppText, Banner, Button, Screen } from '@/components/ui';
 import { formatPlate } from '@/domain/registration';
@@ -22,11 +22,13 @@ export default function SharePreview() {
   const cardRef = useRef<ComponentRef<typeof View>>(null);
   const [sharing, setSharing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [problem, setProblem] = useState<'unavailable' | 'failed' | null>(null);
 
   if (!vehicle || !assessment) return <Redirect href="/(tabs)" />;
 
   const share = async () => {
     setSharing(true);
+    setProblem(null);
     try {
       const caption = t('share.caption', {
         headline: verdictCopy(assessment, vehicle, t, language).title,
@@ -35,11 +37,14 @@ export default function SharePreview() {
       });
       const result = await shareViewAsImage(cardRef, caption, t('share.title'));
       if (result === 'unavailable') {
-        Alert.alert(t('share.unavailable'));
+        setProblem('unavailable');
         return;
       }
       setCopied(true);
       track('verdict_shared', { tone: assessment.headline.tone, stage: assessment.stage });
+    } catch (error) {
+      console.warn('Share failed', error);
+      setProblem('failed');
     } finally {
       setSharing(false);
     }
@@ -60,6 +65,12 @@ export default function SharePreview() {
       <View style={styles.preview}>
         <ShareCard ref={cardRef} vehicle={vehicle} assessment={assessment} />
       </View>
+      {problem ? (
+        <Banner
+          tone={problem === 'failed' ? 'danger' : 'warning'}
+          message={t(problem === 'failed' ? 'share.failed' : 'share.unavailable')}
+        />
+      ) : null}
       {copied ? (
         <Banner tone="success" message={t('share.captionCopied')} />
       ) : (

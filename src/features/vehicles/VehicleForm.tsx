@@ -1,8 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo, useRef, useState } from 'react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import * as Haptics from 'expo-haptics';
+import { useMemo, useRef, useState, type ComponentRef } from 'react';
+import { Controller, useForm, useWatch, type FieldErrors } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Alert, Pressable, StyleSheet, Switch, View } from 'react-native';
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Switch,
+  View,
+  type ScrollView,
+  type TextInput,
+} from 'react-native';
 import { useShallow } from 'zustand/react/shallow';
 
 import {
@@ -64,6 +73,18 @@ const VEHICLE_TYPES: VehicleType[] = ['car', 'two-wheeler', 'goods'];
 const FUELS: FuelType[] = ['petrol', 'diesel', 'cng', 'electric', 'hybrid'];
 const EARLIEST_REGISTRATION = new Date(1990, 0, 1);
 
+/** Fields that can fail validation, in the order they appear on screen. */
+const REQUIRED_FIELDS = ['plate', 'registeredInDelhi', 'homeZone'] as const;
+type RequiredField = (typeof REQUIRED_FIELDS)[number];
+type Section = 'vehicle' | 'area';
+const FIELD_SECTION: Record<RequiredField, Section> = {
+  plate: 'vehicle',
+  registeredInDelhi: 'vehicle',
+  homeZone: 'area',
+};
+/** Room for the section title above a card when scrolling to it. */
+const SECTION_HEADER_ALLOWANCE = 56;
+
 export function VehicleForm({ initial, submitLabel, onSubmit, onRemove }: VehicleFormProps) {
   const { t, i18n } = useTranslation();
   const language = i18n.language as LanguageCode;
@@ -81,7 +102,11 @@ export function VehicleForm({ initial, submitLabel, onSubmit, onRemove }: Vehicl
     defaultValues: toFormValues(initial),
     mode: 'onTouched',
   });
-  const { errors, isSubmitting } = formState;
+  const { errors, isSubmitting, submitCount } = formState;
+
+  const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
+  const plateRef = useRef<ComponentRef<typeof TextInput>>(null);
+  const sectionY = useRef<Record<Section, number>>({ vehicle: 0, area: 0 });
 
   const [scanNotice, setScanNotice] = useState<Notice>(null);
   const [areaNotice, setAreaNotice] = useState<Notice>(null);
@@ -254,7 +279,25 @@ export function VehicleForm({ initial, submitLabel, onSubmit, onRemove }: Vehicl
     }
   };
 
-  const submit = handleSubmit((values) => onSubmit(toVehicleInput(values)));
+  // Take the user to the first problem instead of leaving them to hunt for it.
+  const onInvalid = (invalid: FieldErrors<VehicleFormValues>) => {
+    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    const first = REQUIRED_FIELDS.find((field) => invalid[field]);
+    if (!first) return;
+    const y = sectionY.current[FIELD_SECTION[first]];
+    scrollRef.current?.scrollTo({ y: Math.max(0, y - SECTION_HEADER_ALLOWANCE), animated: true });
+    if (first === 'plate') setTimeout(() => plateRef.current?.focus(), 350);
+  };
+
+  // Built on press, not during render, because `onInvalid` reads refs.
+  const submit = () => handleSubmit((values) => onSubmit(toVehicleInput(values)), onInvalid)();
+
+  const fieldNames: Record<RequiredField, string> = {
+    plate: t('vehicle.plateLabel'),
+    registeredInDelhi: t('vehicle.fieldDelhi'),
+    homeZone: t('vehicle.sectionArea'),
+  };
+  const missing = submitCount > 0 ? REQUIRED_FIELDS.filter((field) => errors[field]) : [];
 
   // ——— Choices ————————————————————————————————————————————————————
 
@@ -312,7 +355,21 @@ export function VehicleForm({ initial, submitLabel, onSubmit, onRemove }: Vehicl
   return (
     <Screen
       edges={[]}
-      footer={<Button label={submitLabel} onPress={() => void submit()} loading={isSubmitting} />}
+      scrollRef={scrollRef}
+      footer={
+        <View style={styles.footer}>
+          {missing.length > 0 ? (
+            <Banner
+              tone="danger"
+              title={t('vehicle.fixTitle', { count: missing.length })}
+              message={t('vehicle.fixBody', {
+                fields: missing.map((field) => fieldNames[field]).join(' · '),
+              })}
+            />
+          ) : null}
+          <Button label={submitLabel} onPress={() => void submit()} loading={isSubmitting} />
+        </View>
+      }
     >
       {isDocumentScanningAvailable() ? (
         <View style={styles.scanCard}>
@@ -347,12 +404,16 @@ export function VehicleForm({ initial, submitLabel, onSubmit, onRemove }: Vehicl
       ) : null}
 
       <SectionHeader title={t('vehicle.sectionVehicle')} />
-      <Card style={styles.section}>
+      <Card
+        style={styles.section}
+        onLayout={(event) => (sectionY.current.vehicle = event.nativeEvent.layout.y)}
+      >
         <Controller
           control={control}
           name="plate"
           render={({ field: { value, onChange, onBlur } }) => (
             <TextField
+              ref={plateRef}
               label={t('vehicle.plateLabel')}
               placeholder={t('vehicle.platePlaceholder')}
               value={value}
@@ -491,7 +552,10 @@ export function VehicleForm({ initial, submitLabel, onSubmit, onRemove }: Vehicl
       </Card>
 
       <SectionHeader title={t('vehicle.sectionArea')} />
-      <Card style={styles.section}>
+      <Card
+        style={styles.section}
+        onLayout={(event) => (sectionY.current.area = event.nativeEvent.layout.y)}
+      >
         <Controller
           control={control}
           name="homeZone"
@@ -607,6 +671,9 @@ export function VehicleForm({ initial, submitLabel, onSubmit, onRemove }: Vehicl
 }
 
 const styles = StyleSheet.create({
+  footer: {
+    gap: spacing.md,
+  },
   scanCard: {
     gap: spacing.md,
     padding: spacing.lg,
