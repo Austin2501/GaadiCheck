@@ -9,6 +9,7 @@ Today's GRAP verdict for your exact vehicle across Delhi-NCR — district by dis
   <a href="https://gaadicheck.expo.app">Website</a> ·
   <a href="https://gaadicheck.expo.app/app/">Web app</a> ·
   <a href="https://github.com/Austin2501/GaadiCheck/releases/latest/download/GaadiCheck.apk">Download APK</a> ·
+  <a href="docs/project-overview.md">Project overview</a> ·
   <a href="docs/README.md">Documentation</a>
 </p>
 

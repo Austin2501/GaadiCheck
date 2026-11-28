@@ -1,9 +1,10 @@
 # GaadiCheck documentation
 
-The project handbook: how GaadiCheck is put together, how to run and change it, and how to ship it. Start with the [main README](../README.md) for what the app does and how the code is organised.
+The project handbook: how GaadiCheck is put together, how to run and change it, and how to ship it. New here? Read the [project overview](project-overview.md) first, then the [main README](../README.md) for how the code is organised.
 
 | Guide                                                                                              | Read it when you want to…                                                                                         |
 | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [Project overview](project-overview.md)                                                            | Understand the problem, the research, the solution, the technical approach and the real-world impact              |
 | [Development](development.md)                                                                      | Set up the project, run it on a phone or in the browser, and follow the code conventions                          |
 | [Data and rules](data-and-rules.md)                                                                | Change the GRAP stage, add or edit a rule (including odd-even), or understand where air-quality numbers come from |
 | [Releasing](releasing.md)                                                                          | Build an APK, publish it on GitHub, push an over-the-air update, or deploy the website                            |
