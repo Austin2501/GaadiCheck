@@ -13,7 +13,7 @@ const en = {
     updated: 'Updated {{time}}',
     offline: 'Offline · showing saved data',
     disclaimerShort:
-      'Independent app — not affiliated with CAQM or any government body. Always follow the latest official order.',
+      'GaadiCheck is an independent app, not affiliated with CAQM or any government body. Always follow the latest official order.',
     viewOrder: 'View official order',
   },
   languages: {
